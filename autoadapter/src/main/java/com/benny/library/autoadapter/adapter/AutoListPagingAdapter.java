@@ -8,13 +8,13 @@ import com.benny.library.autoadapter.IViewCreator;
  * Created by benny on 2/26/16.
  */
 
-public class BaseListPagingAdapter<T> extends BaseListAdapter<T> {
+public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements AdapterPagingCompleteHandler {
     private boolean hasNextPage = true;
     private boolean loading = false;
 
     private AdapterPagingListener<T> listener;
 
-    public BaseListPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
+    public AutoListPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
         super(viewCreator, itemAccessor);
     }
 
@@ -28,7 +28,7 @@ public class BaseListPagingAdapter<T> extends BaseListAdapter<T> {
 
         if (position == getCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            listener.onLoadPage(getItem(position - 1), position);
+            listener.onLoadPage(this, getItem(position - 1), position);
         }
 
         return convertView;

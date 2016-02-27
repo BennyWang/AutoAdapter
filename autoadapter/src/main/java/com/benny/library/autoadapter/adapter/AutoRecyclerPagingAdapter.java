@@ -7,12 +7,12 @@ import com.benny.library.autoadapter.IViewCreator;
  * Created by benny on 2/26/16.
  */
 
-public class BaseRecyclerPagingAdapter<T> extends BaseRecyclerAdapter<T> {
+public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> implements AdapterPagingCompleteHandler {
     private AdapterPagingListener<T> pagingListener;
     private boolean hasNextPage = true;
     private boolean loading = false;
 
-    public BaseRecyclerPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
+    public AutoRecyclerPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
         super(viewCreator, itemAccessor);
     }
 
@@ -22,7 +22,7 @@ public class BaseRecyclerPagingAdapter<T> extends BaseRecyclerAdapter<T> {
 
         if (position == getItemCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            pagingListener.onLoadPage(itemAccessor.get(position - 1), position);
+            pagingListener.onLoadPage(this, itemAccessor.get(position - 1), position);
         }
     }
 

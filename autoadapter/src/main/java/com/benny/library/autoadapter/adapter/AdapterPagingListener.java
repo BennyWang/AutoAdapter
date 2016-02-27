@@ -5,5 +5,5 @@ package com.benny.library.autoadapter.adapter;
  */
 
 public interface AdapterPagingListener<T> {
-    void onLoadPage(T previous, int position);
+    void onLoadPage(AdapterPagingCompleteHandler receiver, T previous, int position);
 }
