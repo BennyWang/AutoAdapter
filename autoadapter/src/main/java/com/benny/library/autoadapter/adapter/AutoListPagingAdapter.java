@@ -4,6 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.benny.library.autoadapter.IViewCreator;
 
+import java.util.List;
+
 /**
  * Created by benny on 2/26/16.
  */
@@ -14,8 +16,16 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
 
     private AdapterPagingListener<T> listener;
 
-    public AutoListPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
-        super(viewCreator, itemAccessor);
+    public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+        super(itemAccessor, viewCreator);
+    }
+
+    public AutoListPagingAdapter(T[] items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
+    }
+
+    public AutoListPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
     }
 
     public void setPagingListener(AdapterPagingListener<T> listener) {

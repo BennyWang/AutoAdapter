@@ -3,6 +3,8 @@ package com.benny.library.autoadapter.adapter;
 import android.support.v7.widget.RecyclerView;
 import com.benny.library.autoadapter.IViewCreator;
 
+import java.util.List;
+
 /**
  * Created by benny on 2/26/16.
  */
@@ -12,8 +14,16 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
     private boolean hasNextPage = true;
     private boolean loading = false;
 
-    public AutoRecyclerPagingAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
-        super(viewCreator, itemAccessor);
+    public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+        super(itemAccessor, viewCreator);
+    }
+
+    public AutoRecyclerPagingAdapter(T[] items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
+    }
+
+    public AutoRecyclerPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
     }
 
     @Override

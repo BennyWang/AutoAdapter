@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.benny.library.autoadapter.IViewCreator;
 
+import java.util.List;
+
 /**
  * Created by benny on 2/27/16.
  */
@@ -12,9 +14,19 @@ public class BaseViewPagerAdapter<T> extends PagerAdapter {
     private IViewCreator<T> viewCreator;
     protected IAdapterItemAccessor<T> itemAccessor;
 
-    public BaseViewPagerAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
+    public BaseViewPagerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
+    }
+
+    public BaseViewPagerAdapter(T[] items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+    }
+
+    public BaseViewPagerAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
 import com.benny.library.autoadapter.IViewCreator;
 
+import java.util.List;
+
 /**
  * Created by benny on 2/26/16.
  */
@@ -16,9 +18,19 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
     private IViewCreator<T> viewCreator;
     protected IAdapterItemAccessor<T> itemAccessor;
 
-    public AutoRecyclerAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
+    public AutoRecyclerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
+    }
+
+    public AutoRecyclerAdapter(T[] items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+    }
+
+    public AutoRecyclerAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
     }
 
     protected RecyclerView.ViewHolder createViewHolder(View itemView) {

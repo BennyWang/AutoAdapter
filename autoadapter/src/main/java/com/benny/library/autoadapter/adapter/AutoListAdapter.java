@@ -6,6 +6,8 @@ import android.widget.BaseAdapter;
 import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
 import com.benny.library.autoadapter.IViewCreator;
 
+import java.util.List;
+
 /**
  * Created by benny on 2/26/16.
  */
@@ -14,9 +16,19 @@ public class AutoListAdapter<T> extends BaseAdapter {
     private IViewCreator<T> viewCreator;
     private IAdapterItemAccessor<T> itemAccessor;
 
-    public AutoListAdapter(IViewCreator<T> viewCreator, IAdapterItemAccessor<T> itemAccessor) {
+    public AutoListAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
+    }
+
+    public AutoListAdapter(T[] items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+    }
+
+    public AutoListAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        this.viewCreator = viewCreator;
+        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
     }
 
     @Override

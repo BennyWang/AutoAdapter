@@ -6,6 +6,7 @@ A library for for simplifying adapter creation
 ### Same layout for each row
 
 ```java
+String[] names = new String[] {"Jason", "Benny", "World"};
 
 class ViewHolder implements AbstractViewHolder<String> {
     @InjectView(R.id.text)
@@ -20,10 +21,12 @@ class ViewHolder implements AbstractViewHolder<String> {
     }
 }
 
-listView.setAdapter(new AutoListAdapter<String>(R.layout.list_item, new Factory<ViewHolder>() {
+ViewCreator viewCreator = new ViewCreator(R.layout.list_item, new Factory<ViewHolder>() {
     ViewHolder create() {
         return new ViewHolder();
     }
-}));
+});
+
+listView.setAdapter(new AutoListAdapter<String>(names, viewCreator);
 
 ```
