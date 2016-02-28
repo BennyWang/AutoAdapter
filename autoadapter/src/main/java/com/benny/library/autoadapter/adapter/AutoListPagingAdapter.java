@@ -20,10 +20,6 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
         super(itemAccessor, viewCreator);
     }
 
-    public AutoListPagingAdapter(T[] items, IViewCreator<T> viewCreator) {
-        super(items, viewCreator);
-    }
-
     public AutoListPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
         super(items, viewCreator);
     }

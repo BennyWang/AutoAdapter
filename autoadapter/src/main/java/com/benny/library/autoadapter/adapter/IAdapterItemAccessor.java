@@ -5,6 +5,7 @@ package com.benny.library.autoadapter.adapter;
  */
 
 public interface IAdapterItemAccessor<T> {
+    void setDataSetChangedNotifier(IDataSetChangedNotifier notifier);
     int size();
     T get(int position);
     boolean isEmpty();

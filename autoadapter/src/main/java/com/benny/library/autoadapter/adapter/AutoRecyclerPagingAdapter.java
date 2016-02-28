@@ -18,10 +18,6 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
         super(itemAccessor, viewCreator);
     }
 
-    public AutoRecyclerPagingAdapter(T[] items, IViewCreator<T> viewCreator) {
-        super(items, viewCreator);
-    }
-
     public AutoRecyclerPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
         super(items, viewCreator);
     }

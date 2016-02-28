@@ -1,5 +1,6 @@
 package com.benny.library.autoadapter.adapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,13 +10,23 @@ import java.util.List;
 
 public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
     private List<T> data;
+    IDataSetChangedNotifier notifier;
+
+    public SimpleAdapterItemAccessor() {
+        data = new ArrayList<T>();
+    }
 
     public SimpleAdapterItemAccessor(List<T> data) {
         this.data = data;
     }
 
-    public SimpleAdapterItemAccessor(T[] data) {
-        this.data = Arrays.asList(data);
+    public void update(List<T> data) {
+        this.data = data;
+        notifier.notifyDataSetChanged();
+    }
+
+    public void setDataSetChangedNotifier(IDataSetChangedNotifier notifier) {
+        this.notifier = notifier;
     }
 
     public int size() {

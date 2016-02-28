@@ -19,16 +19,16 @@ public class AutoListAdapter<T> extends BaseAdapter {
     public AutoListAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-    }
-
-    public AutoListAdapter(T[] items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        itemAccessor.setDataSetChangedNotifier(new IDataSetChangedNotifier() {
+            @Override
+            public void notifyDataSetChanged() {
+                AutoListAdapter.this.notifyDataSetChanged();
+            }
+        });
     }
 
     public AutoListAdapter(List<T> items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        this(new SimpleAdapterItemAccessor<T>(items), viewCreator);
     }
 
     @Override

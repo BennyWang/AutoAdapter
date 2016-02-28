@@ -21,16 +21,16 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
     public AutoRecyclerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-    }
-
-    public AutoRecyclerAdapter(T[] items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        itemAccessor.setDataSetChangedNotifier(new IDataSetChangedNotifier() {
+            @Override
+            public void notifyDataSetChanged() {
+                AutoRecyclerAdapter.this.notifyDataSetChanged();
+            }
+        });
     }
 
     public AutoRecyclerAdapter(List<T> items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        this(new SimpleAdapterItemAccessor<T>(items), viewCreator);
     }
 
     protected RecyclerView.ViewHolder createViewHolder(View itemView) {
