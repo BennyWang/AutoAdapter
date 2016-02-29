@@ -7,7 +7,7 @@ import android.view.View;
  * Created by benny on 2/15/16.
  */
 
-public interface AbstractViewHolder<T> {
+public interface IViewHolder<T> {
     void bind(View view);
     void update(T data);
 }

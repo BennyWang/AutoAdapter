@@ -3,7 +3,7 @@ package com.benny.library.autoadapter.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
+import com.benny.library.autoadapter.viewholder.IViewHolder;
 import com.benny.library.autoadapter.IViewCreator;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AutoListAdapter<T> extends BaseAdapter {
     private IViewCreator<T> viewCreator;
-    private IAdapterItemAccessor<T> itemAccessor;
+    protected IAdapterItemAccessor<T> itemAccessor;
 
     public AutoListAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
@@ -53,7 +53,7 @@ public class AutoListAdapter<T> extends BaseAdapter {
             convertView = viewCreator.view(parent);
         }
 
-        ((AbstractViewHolder<T>)convertView.getTag()).update(getItem(position));
+        ((IViewHolder<T>)convertView.getTag()).update(getItem(position));
         return convertView;
     }
 
@@ -65,5 +65,10 @@ public class AutoListAdapter<T> extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         return viewCreator.viewTypeFor(itemAccessor.get(position), position, getCount());
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return itemAccessor.isEmpty();
     }
 }

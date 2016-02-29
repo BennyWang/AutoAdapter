@@ -50,4 +50,9 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
     public int getCount() {
         return super.getCount() + (hasNextPage ? 1 : 0);
     }
+
+    @Override
+    public boolean isEmpty() {
+        return itemAccessor.isEmpty() && !hasNextPage;
+    }
 }
