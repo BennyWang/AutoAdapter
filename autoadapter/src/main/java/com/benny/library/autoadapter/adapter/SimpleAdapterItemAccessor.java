@@ -22,7 +22,7 @@ public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
 
     public void update(List<T> data) {
         this.data = data;
-        notifier.notifyDataSetChanged();
+        if(notifier != null) notifier.notifyDataSetChanged();
     }
 
     public void setDataSetChangedNotifier(IDataSetChangedNotifier notifier) {
