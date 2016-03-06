@@ -19,11 +19,11 @@ listView.setAdapter(new AutoListAdapter(data, new ViewCreator(R.layout.list_item
 
 ```java
 
-class ViewHolder1 implements IViewHolder<Stock> {
+class ViewHolder1 implements IViewHolder<DataType> {
     // bla bla
 }
 
-class ViewHolder2 implements IViewHolder<Stock> {
+class ViewHolder2 implements IViewHolder<DataType> {
     // bla bla bla
 }
 
@@ -39,8 +39,8 @@ listView.setAdapter(new AutoListAdapter(stocks, collection);
 
 ```java
 
-AdapterPagingListener<DataType> pagingListener = new AdapterPagingListener<Stock>() {
-    void onLoadPage(AdapterPagingCompleteHandler receiver, Stock previous, int position) {
+AdapterPagingListener<DataType> pagingListener = new AdapterPagingListener<DataType>() {
+    void onLoadPage(AdapterPagingCompleteHandler receiver, DataType previous, int position) {
         // bla bla bla
     }
 }
