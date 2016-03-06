@@ -17,12 +17,14 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
     private boolean hasNextPage = true;
     private boolean loading = false;
 
-    public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+    public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(itemAccessor, viewCreator);
+        this.pagingListener = pagingListener;
     }
 
-    public AutoRecyclerPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+    public AutoRecyclerPagingAdapter(List<T> items, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(items, viewCreator);
+        this.pagingListener = pagingListener;
     }
 
     @Override
@@ -44,9 +46,5 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
         loading = false;
         this.hasNextPage = hasNextPage;
         notifyDataSetChanged();
-    }
-
-    public void setPagingListener(AdapterPagingListener<T> pagingListener) {
-        this.pagingListener = pagingListener;
     }
 }

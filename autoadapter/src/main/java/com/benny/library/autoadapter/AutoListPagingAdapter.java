@@ -17,18 +17,16 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
     private boolean hasNextPage = true;
     private boolean loading = false;
 
-    private AdapterPagingListener<T> listener;
+    private AdapterPagingListener<T> pagingListener;
 
-    public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+    public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(itemAccessor, viewCreator);
+        this.pagingListener = pagingListener;
     }
 
-    public AutoListPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+    public AutoListPagingAdapter(List<T> items, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(items, viewCreator);
-    }
-
-    public void setPagingListener(AdapterPagingListener<T> listener) {
-        this.listener = listener;
+        this.pagingListener = pagingListener;
     }
 
     @Override
@@ -37,7 +35,7 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
 
         if (position == getCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            listener.onLoadPage(this, getItem(position - 1), position);
+            pagingListener.onLoadPage(this, getItem(position - 1), position);
         }
 
         return convertView;

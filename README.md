@@ -6,22 +6,12 @@ A library for for simplifying adapter creation
 ### Single Layout
 
 ```java
-String[] names = new String[] {"Jason", "Benny", "World"};
 
 class ViewHolder implements IViewHolder<String> {
-    @InjectView(R.id.text)
-    TextView text;
-
-    public void bind(View view) {
-        ButterKnife.inject(this, view);
-    }
-
-    public void update(String data) {
-        text.setText("Hello " + data);
-    }
+    // bla bla
 }
 
-listView.setAdapter(new AutoListAdapter<String>(names, new ViewCreator(R.layout.list_item, ::ViewHolder));
+listView.setAdapter(new AutoListAdapter(data, new ViewCreator(R.layout.list_item, ::ViewHolder));
 
 ```
 
@@ -30,18 +20,18 @@ listView.setAdapter(new AutoListAdapter<String>(names, new ViewCreator(R.layout.
 ```java
 
 class ViewHolder1 implements IViewHolder<Stock> {
-    // xxxxxxx
+    // bla bla
 }
 
 class ViewHolder2 implements IViewHolder<Stock> {
     // bla bla bla
 }
 
-ViewCreatorCollection collection = new ViewCreatorCollection()
-collection.add((data, position, itemCount) -> position == 1, new ViewCreator(R.layout.list_item_1, ::ViewHolder1));
-collection.add((data, position, itemCount) -> position == 2, new ViewCreator(R.layout.list_item_2, ::ViewHolder2));
-
-listView.setAdapter(new AutoListAdapter<Stock>(stocks, collection);
+ViewCreatorCollection<DataType> collection = new ViewCreatorCollection.Builder<DataType>()
+    .addFilter(data, position, itemCount) -> position == 1, R.layout.list_item_1, ::ViewHolder1)
+    .addFilter((data, position, itemCount) -> position == 2, R.layout.list_item_2, ::ViewHolder2).build();
+    
+listView.setAdapter(new AutoListAdapter(stocks, collection);
 
 ```
 
@@ -49,19 +39,16 @@ listView.setAdapter(new AutoListAdapter<Stock>(stocks, collection);
 
 ```java
 
-AdapterPagingListener<Stock> pagingListener = new AdapterPagingListener<Stock>() {
+AdapterPagingListener<DataType> pagingListener = new AdapterPagingListener<Stock>() {
     void onLoadPage(AdapterPagingCompleteHandler receiver, Stock previous, int position) {
         // bla bla bla
     }
 }
 
-ViewCreatorCollection collection = new ViewCreatorCollection()
-collection.add((data, position, itemCount) -> position == 1, new ViewCreator(R.layout.list_item_1, ::ViewHolder1));
-collection.add((data, position, itemCount) -> position == itemCount - 1 && data == null, new ViewCreator(R.layout.list_item_loading, ::LoadingViewHolder));
+ViewCreatorCollection collection = new ViewCreatorCollection.Builder<DataType>().loadingResId(R.layout.list_item_1)
+    .addFilter((data, position, itemCount) -> data != null, R.layout.list_item, ::LoadingViewHolder).build();
 
-AutoListPagingAdapter pagingAdapter = new new AutoListPagingAdapter<Stock>(stocks, collection)
-pagingListener.setPagingListener(pagingListener);
-listView.setAdapter(new AutoListPagingAdapter<Stock>(pagingAdapter);
+listView.setAdapter(new AutoListPagingAdapter<DataType>(stocks, collection, pagingListener));
 
 ```
 
