@@ -39,8 +39,6 @@ class ViewHolder2 implements IViewHolder<Stock> {
 
 ViewCreatorCollection collection = new ViewCreatorCollection()
 collection.add((data, position, itemCount) -> position == 1, new ViewCreator(R.layout.list_item_1, ::ViewHolder1));
-
-ViewCreatorCollection collection = new ViewCreatorCollection()
 collection.add((data, position, itemCount) -> position == 2, new ViewCreator(R.layout.list_item_2, ::ViewHolder2));
 
 listView.setAdapter(new AutoListAdapter<Stock>(stocks, collection);
@@ -59,8 +57,6 @@ AdapterPagingListener<Stock> pagingListener = new AdapterPagingListener<Stock>()
 
 ViewCreatorCollection collection = new ViewCreatorCollection()
 collection.add((data, position, itemCount) -> position == 1, new ViewCreator(R.layout.list_item_1, ::ViewHolder1));
-
-ViewCreatorCollection collection = new ViewCreatorCollection()
 collection.add((data, position, itemCount) -> position == itemCount - 1 && data == null, new ViewCreator(R.layout.list_item_loading, ::LoadingViewHolder));
 
 AutoListPagingAdapter pagingAdapter = new new AutoListPagingAdapter<Stock>(stocks, collection)
