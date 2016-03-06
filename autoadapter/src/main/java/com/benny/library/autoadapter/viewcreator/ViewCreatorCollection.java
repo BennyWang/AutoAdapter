@@ -1,4 +1,4 @@
-package com.benny.library.autoadapter;
+package com.benny.library.autoadapter.viewcreator;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +47,7 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
     }
 
 
-    public class ViewTypeFilter<T> {
+    public static class ViewTypeFilter<T> {
         public Fun3<T, Integer, Integer, Boolean> filter;
         public ViewCreator<T> creator;
         public int viewType;

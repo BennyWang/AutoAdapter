@@ -1,10 +1,12 @@
-package com.benny.library.autoadapter.adapter;
+package com.benny.library.autoadapter;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.benny.library.autoadapter.listener.DataSetChangedListener;
 import com.benny.library.autoadapter.viewholder.IViewHolder;
-import com.benny.library.autoadapter.IViewCreator;
+import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
 
@@ -19,9 +21,9 @@ public class AutoListAdapter<T> extends BaseAdapter {
     public AutoListAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-        itemAccessor.setDataSetChangedNotifier(new IDataSetChangedNotifier() {
+        itemAccessor.setDataSetChangedNotifier(new DataSetChangedListener() {
             @Override
-            public void notifyDataSetChanged() {
+            public void onDataSetChanged() {
                 AutoListAdapter.this.notifyDataSetChanged();
             }
         });

@@ -1,7 +1,10 @@
-package com.benny.library.autoadapter.adapter;
+package com.benny.library.autoadapter;
 
 import android.support.v7.widget.RecyclerView;
-import com.benny.library.autoadapter.IViewCreator;
+
+import com.benny.library.autoadapter.listener.AdapterPagingCompleteListener;
+import com.benny.library.autoadapter.listener.AdapterPagingListener;
+import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
 
@@ -9,7 +12,7 @@ import java.util.List;
  * Created by benny on 2/26/16.
  */
 
-public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> implements AdapterPagingCompleteHandler {
+public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> implements AdapterPagingCompleteListener {
     private AdapterPagingListener<T> pagingListener;
     private boolean hasNextPage = true;
     private boolean loading = false;
@@ -37,7 +40,7 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
         return super.getItemCount() + (hasNextPage ? 1 : 0);
     }
 
-    public void loadComplete(boolean hasNextPage) {
+    public void onPagingComplete(boolean hasNextPage) {
         loading = false;
         this.hasNextPage = hasNextPage;
         notifyDataSetChanged();

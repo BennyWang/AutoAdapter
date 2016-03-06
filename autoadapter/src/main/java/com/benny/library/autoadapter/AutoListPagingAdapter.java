@@ -1,8 +1,11 @@
-package com.benny.library.autoadapter.adapter;
+package com.benny.library.autoadapter;
 
 import android.view.View;
 import android.view.ViewGroup;
-import com.benny.library.autoadapter.IViewCreator;
+
+import com.benny.library.autoadapter.listener.AdapterPagingCompleteListener;
+import com.benny.library.autoadapter.listener.AdapterPagingListener;
+import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by benny on 2/26/16.
  */
 
-public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements AdapterPagingCompleteHandler {
+public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements AdapterPagingCompleteListener {
     private boolean hasNextPage = true;
     private boolean loading = false;
 
@@ -40,7 +43,7 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
         return convertView;
     }
 
-    public void loadComplete(boolean hasNextPage) {
+    public void onPagingComplete(boolean hasNextPage) {
         loading = false;
         this.hasNextPage = hasNextPage;
         notifyDataSetChanged();

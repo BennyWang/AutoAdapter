@@ -1,7 +1,8 @@
-package com.benny.library.autoadapter.adapter;
+package com.benny.library.autoadapter;
+
+import com.benny.library.autoadapter.listener.DataSetChangedListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
     private List<T> data;
-    IDataSetChangedNotifier notifier;
+    DataSetChangedListener notifier;
 
     public SimpleAdapterItemAccessor() {
         data = new ArrayList<T>();
@@ -22,10 +23,10 @@ public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
 
     public void update(List<T> data) {
         this.data = data;
-        if(notifier != null) notifier.notifyDataSetChanged();
+        if(notifier != null) notifier.onDataSetChanged();
     }
 
-    public void setDataSetChangedNotifier(IDataSetChangedNotifier notifier) {
+    public void setDataSetChangedNotifier(DataSetChangedListener notifier) {
         this.notifier = notifier;
     }
 
