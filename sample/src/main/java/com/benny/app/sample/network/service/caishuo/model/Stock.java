@@ -70,25 +70,5 @@ public class Stock {
     public boolean existReminder = false;
 
     @SerializedName("listed_state")
-    public int listedState = 0;
-
-    public static final int LISTED_STATE_ABNORMAL = 0;
-    public static final int LISTED_STATE_NORMAL = 1;
-    public static final int LISTED_STATE_DELISTED = 2;
-    public static final int LISTED_STATE_NOTLISTED = 3;
-
-    public static String  listedStateDescription(int listedState) {
-        switch (listedState) {
-            case Stock.LISTED_STATE_ABNORMAL:
-                return "停牌";
-            case Stock.LISTED_STATE_NORMAL:
-                return "正常";
-            case Stock.LISTED_STATE_DELISTED:
-                return "退市";
-            case Stock.LISTED_STATE_NOTLISTED:
-                return "未上市";
-            default:
-                return "未知";
-        }
-    }
+    public ListedState listedState = ListedState.NORMAL;
 }

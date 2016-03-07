@@ -1,11 +1,13 @@
-package com.benny.library.autoadapter.adapter;
+package com.benny.library.autoadapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
-import com.benny.library.autoadapter.IViewCreator;
+
+import com.benny.library.autoadapter.listener.DataSetChangedListener;
+import com.benny.library.autoadapter.viewholder.IViewHolder;
+import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
 
@@ -21,16 +23,16 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
     public AutoRecyclerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-    }
-
-    public AutoRecyclerAdapter(T[] items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        itemAccessor.setDataSetChangedNotifier(new DataSetChangedListener() {
+            @Override
+            public void onDataSetChanged() {
+                AutoRecyclerAdapter.this.notifyDataSetChanged();
+            }
+        });
     }
 
     public AutoRecyclerAdapter(List<T> items, IViewCreator<T> viewCreator) {
-        this.viewCreator = viewCreator;
-        this.itemAccessor = new SimpleAdapterItemAccessor<T>(items);
+        this(new SimpleAdapterItemAccessor<T>(items), viewCreator);
     }
 
     protected RecyclerView.ViewHolder createViewHolder(View itemView) {
@@ -76,7 +78,7 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
 
         @SuppressWarnings("unchecked")
         void notifyPropertyChange(T data, int position) {
-            ((AbstractViewHolder<T>)itemView.getTag()).update(data);
+            ((IViewHolder<T>)itemView.getTag()).update(data);
         }
     }
 }

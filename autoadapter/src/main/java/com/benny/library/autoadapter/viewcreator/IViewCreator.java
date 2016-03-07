@@ -1,4 +1,4 @@
-package com.benny.library.autoadapter;
+package com.benny.library.autoadapter.viewcreator;
 
 import android.view.View;
 import android.view.ViewGroup;

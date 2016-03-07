@@ -1,10 +1,10 @@
-package com.benny.library.autoadapter;
+package com.benny.library.autoadapter.viewcreator;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.benny.library.autoadapter.factory.Factory;
-import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
+import com.benny.library.autoadapter.viewholder.IViewHolder;
 
 /**
  * Created by benny on 2/15/16.
@@ -12,9 +12,9 @@ import com.benny.library.autoadapter.viewholder.AbstractViewHolder;
 
 public class ViewCreator<T> implements IViewCreator<T> {
     private int resId;
-    private Factory<? extends AbstractViewHolder<T>> factory;
+    private Factory<? extends IViewHolder<T>> factory;
 
-    public ViewCreator(int resId, Factory<? extends AbstractViewHolder<T>> factory) {
+    public ViewCreator(int resId, Factory<? extends IViewHolder<T>> factory) {
         this.resId = resId;
         this.factory = factory;
     }
@@ -22,7 +22,7 @@ public class ViewCreator<T> implements IViewCreator<T> {
     @Override
     public View view(ViewGroup container) {
         View view = LayoutInflater.from(container.getContext()).inflate(resId, container, false);
-        AbstractViewHolder<T> vh = factory.create();
+        IViewHolder<T> vh = factory.create();
         vh.bind(view);
         view.setTag(vh);
         return view;

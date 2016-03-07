@@ -3,30 +3,63 @@ A library for for simplifying adapter creation
 
 ## Content
 
-### Same layout for each row
+### Single Layout
 
 ```java
-String[] names = new String[] {"Jason", "Benny", "World"};
 
-class ViewHolder implements AbstractViewHolder<String> {
-    @InjectView(R.id.text)
-    TextView text;
+class ViewHolder implements IViewHolder<String> {
+    // bla bla
+}
+
+listView.setAdapter(new AutoListAdapter(data, new ViewCreator(R.layout.list_item, ::ViewHolder));
+
+```
+
+### Multiple Layout
+
+```java
+
+class ViewHolder1 implements IViewHolder<DataType> {
+    // bla bla
+}
+
+class ViewHolder2 implements IViewHolder<DataType> {
+    // bla bla bla
+}
+
+ViewCreatorCollection<DataType> collection = new ViewCreatorCollection.Builder<DataType>()
+    .addFilter(data, position, itemCount) -> position == 1, R.layout.list_item_1, ::ViewHolder1)
+    .addFilter((data, position, itemCount) -> position == 2, R.layout.list_item_2, ::ViewHolder2).build();
     
-    public void bind(View view) {
-        ButterKnife.inject(this, view);
-    }
-    
-    public void update(String data) {
-        text.setText("Hello " + data);
+listView.setAdapter(new AutoListAdapter(stocks, collection);
+
+```
+
+### Paging ListView
+
+```java
+
+AdapterPagingListener<DataType> pagingListener = new AdapterPagingListener<DataType>() {
+    void onLoadPage(AdapterPagingCompleteHandler receiver, DataType previous, int position) {
+        // bla bla bla
     }
 }
 
-ViewCreator viewCreator = new ViewCreator(R.layout.list_item, new Factory<ViewHolder>() {
-    ViewHolder create() {
-        return new ViewHolder();
-    }
-});
+ViewCreatorCollection collection = new ViewCreatorCollection.Builder<DataType>().loadingResId(R.layout.list_item_1)
+    .addFilter((data, position, itemCount) -> data != null, R.layout.list_item, ::LoadingViewHolder).build();
 
-listView.setAdapter(new AutoListAdapter<String>(names, viewCreator);
+listView.setAdapter(new AutoListPagingAdapter<DataType>(stocks, collection, pagingListener));
 
 ```
+
+### Using with Gradle
+
+```gradle
+dependencies {
+    compile 'com.benny.library:autoadapter:0.1.1'
+}
+```
+
+### Discussion
+
+QQ Group: 516157585
