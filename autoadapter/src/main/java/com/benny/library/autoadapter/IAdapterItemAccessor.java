@@ -7,7 +7,7 @@ import com.benny.library.autoadapter.listener.DataSetChangedListener;
  */
 
 public interface IAdapterItemAccessor<T> {
-    void setDataSetChangedNotifier(DataSetChangedListener notifier);
+    void setDataSetChangedListener(DataSetChangedListener listener);
     int size();
     T get(int position);
     boolean isEmpty();

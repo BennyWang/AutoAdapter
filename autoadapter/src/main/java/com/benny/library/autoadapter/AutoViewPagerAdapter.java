@@ -19,7 +19,7 @@ public class AutoViewPagerAdapter<T> extends PagerAdapter {
     public AutoViewPagerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-        itemAccessor.setDataSetChangedNotifier(new DataSetChangedListener() {
+        itemAccessor.setDataSetChangedListener(new DataSetChangedListener() {
             @Override
             public void onDataSetChanged() {
                 AutoViewPagerAdapter.this.notifyDataSetChanged();
