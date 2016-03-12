@@ -4,8 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.benny.library.autoadapter.listener.DataChangeListener;
 import com.benny.library.autoadapter.listener.DataSetChangedListener;
-import com.benny.library.autoadapter.viewholder.IViewHolder;
 import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
@@ -33,6 +33,11 @@ public class AutoListAdapter<T> extends BaseAdapter {
         this(new SimpleAdapterItemAccessor<T>(items), viewCreator);
     }
 
+    public void swap(AutoListAdapter<T> adapter) {
+        itemAccessor = adapter.itemAccessor;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return itemAccessor.size();
@@ -55,7 +60,7 @@ public class AutoListAdapter<T> extends BaseAdapter {
             convertView = viewCreator.view(parent);
         }
 
-        ((IViewHolder<T>)convertView.getTag()).update(getItem(position));
+        ((DataChangeListener<T>)convertView.getTag()).onDataChange(getItem(position));
         return convertView;
     }
 

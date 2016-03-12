@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.benny.library.autoadapter.listener.DataChangeListener;
 import com.benny.library.autoadapter.listener.DataSetChangedListener;
-import com.benny.library.autoadapter.viewholder.IViewHolder;
 import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
@@ -47,7 +47,11 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ((ViewHolder)viewHolder).notifyPropertyChange(itemAccessor.get(position), position);
+        ((ViewHolder)viewHolder).notifyDataChange(getItem(position), position);
+    }
+
+    public T getItem(int position) {
+        return itemAccessor.get(position);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        return viewCreator.viewTypeFor(itemAccessor.get(position), position, getItemCount());
+        return viewCreator.viewTypeFor(getItem(position), position, getItemCount());
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
@@ -77,8 +81,8 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         @SuppressWarnings("unchecked")
-        void notifyPropertyChange(T data, int position) {
-            ((IViewHolder<T>)itemView.getTag()).update(data);
+        void notifyDataChange(T data, int position) {
+            ((DataChangeListener<T>)itemView.getTag()).onDataChange(data);
         }
     }
 }
