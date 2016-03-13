@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
     private List<T> data;
-    DataSetChangedListener notifier;
+    DataSetChangedListener listener;
 
     public SimpleAdapterItemAccessor() {
         data = new ArrayList<T>();
@@ -23,11 +23,11 @@ public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
 
     public void update(List<T> data) {
         this.data = data;
-        if(notifier != null) notifier.onDataSetChanged();
+        if(listener != null) listener.onDataSetChanged();
     }
 
-    public void setDataSetChangedNotifier(DataSetChangedListener notifier) {
-        this.notifier = notifier;
+    public void setDataSetChangedListener(DataSetChangedListener listener) {
+        this.listener = listener;
     }
 
     public int size() {

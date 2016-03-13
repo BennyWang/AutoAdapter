@@ -19,6 +19,14 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
 
     private AdapterPagingListener<T> pagingListener;
 
+    public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+        super(itemAccessor, viewCreator);
+    }
+
+    public AutoListPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
+    }
+
     public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(itemAccessor, viewCreator);
         this.pagingListener = pagingListener;
@@ -29,22 +37,25 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
         this.pagingListener = pagingListener;
     }
 
+    public void setPagingListener(AdapterPagingListener<T> pagingListener) {
+        this.pagingListener = pagingListener;
+    }
+
+    @Override
+    public T getItem(int position) {
+        return position < itemAccessor.size() ? super.getItem(position) : null;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
 
         if (position == getCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            pagingListener.onLoadPage(this, getItem(position - 1), position);
+            if(pagingListener != null) pagingListener.onLoadPage(this, getItem(position - 1), position);
         }
 
         return convertView;
-    }
-
-    public void onPagingComplete(boolean hasNextPage) {
-        loading = false;
-        this.hasNextPage = hasNextPage;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -55,5 +66,11 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
     @Override
     public boolean isEmpty() {
         return itemAccessor.isEmpty() && !hasNextPage;
+    }
+
+    public void onPagingComplete(boolean hasNextPage) {
+        loading = false;
+        this.hasNextPage = hasNextPage;
+        notifyDataSetChanged();
     }
 }

@@ -17,6 +17,14 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
     private boolean hasNextPage = true;
     private boolean loading = false;
 
+    public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
+        super(itemAccessor, viewCreator);
+    }
+
+    public AutoRecyclerPagingAdapter(List<T> items, IViewCreator<T> viewCreator) {
+        super(items, viewCreator);
+    }
+
     public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator, AdapterPagingListener<T> pagingListener) {
         super(itemAccessor, viewCreator);
         this.pagingListener = pagingListener;
@@ -27,14 +35,23 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
         this.pagingListener = pagingListener;
     }
 
+    public void setPagingListener(AdapterPagingListener<T> pagingListener) {
+        this.pagingListener = pagingListener;
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         super.onBindViewHolder(viewHolder, position);
 
         if (position == getItemCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            pagingListener.onLoadPage(this, itemAccessor.get(position - 1), position);
+            if(pagingListener != null) pagingListener.onLoadPage(this, getItem(position - 1), position);
         }
+    }
+
+    @Override
+    public T getItem(int position) {
+        return position < itemAccessor.size() ? super.getItem(position) : null;
     }
 
     @Override

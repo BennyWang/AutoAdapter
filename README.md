@@ -56,7 +56,7 @@ listView.setAdapter(new AutoListPagingAdapter<DataType>(stocks, collection, pagi
 
 ```gradle
 dependencies {
-    compile 'com.benny.library:autoadapter:0.1.1'
+    compile 'com.benny.library:autoadapter:0.1.2'
 }
 ```
 
