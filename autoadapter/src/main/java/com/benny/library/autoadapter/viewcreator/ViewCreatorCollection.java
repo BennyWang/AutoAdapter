@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.benny.library.autoadapter.factory.Factory;
+import com.benny.library.autoadapter.factory.MockViewHolerFactory;
 import com.benny.library.autoadapter.utils.Func3;
 import com.benny.library.autoadapter.viewholder.MockViewHolder;
 import com.benny.library.autoadapter.viewholder.IViewHolder;
@@ -19,9 +20,6 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
     private int lastViewType = -1;
     private List<ViewTypeFilter<T> > viewTypeFilters = new ArrayList<ViewTypeFilter<T>>();
 
-    public ViewCreatorCollection() {
-    }
-
     protected ViewCreatorCollection(List<ViewTypeFilter<T> > viewTypeFilters) {
         this.viewTypeFilters = viewTypeFilters;
     }
@@ -31,14 +29,6 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
             if(viewTypeFilter.canProcess(data, position, itemCount)) return viewTypeFilter;
         }
         throw new RuntimeException("can not process view type for: " + data.toString());
-    }
-
-    public void addFilter(Func3<T, Integer, Integer, Boolean> filter, int resId, Factory<? extends IViewHolder<T>> factory) {
-        viewTypeFilters.add(new ViewTypeFilter<T>(filter, new ViewCreator<T>(resId, factory), viewTypeFilters.size()));
-    }
-
-    public void addFilter(Func3<T, Integer, Integer, Boolean> filter, IViewCreator<T> viewCreator) {
-        viewTypeFilters.add(new ViewTypeFilter<T>(filter, viewCreator, viewTypeFilters.size()));
     }
 
     @Override
@@ -76,22 +66,40 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
     }
 
     public static class Builder<T> {
-        private int viewTypeBegin = 0;
         private int loadingResId = -1;
         private List<ViewTypeFilter<T> > viewTypeFilters = new ArrayList<ViewTypeFilter<T>>();
+
+        private IViewCreator<T> defaultViewCreator;
+
+        private Func3<T, Integer, Integer, Boolean> alwaysTrue = new Func3<T, Integer, Integer, Boolean>() {
+            @Override
+            public Boolean call(T t, Integer integer, Integer integer2) {
+                return true;
+            }
+        };
 
         public Builder loadingResId(int loadingResId) {
             this.loadingResId = loadingResId;
             return this;
         }
 
+        public Builder<T> addFilter(IViewCreator<T> viewCreator) {
+            defaultViewCreator = viewCreator;
+            return this;
+        }
+
+        public Builder<T> addFilter(int resId, Factory<? extends IViewHolder<T>> factory) {
+            defaultViewCreator = new ViewCreator<T>(resId, factory);
+            return this;
+        }
+
         public Builder<T> addFilter(Func3<T, Integer, Integer, Boolean> filter, int resId, Factory<? extends IViewHolder<T>> factory) {
-            viewTypeFilters.add(new ViewTypeFilter<T>(filter, new ViewCreator<T>(resId, factory), viewTypeBegin++));
+            viewTypeFilters.add(new ViewTypeFilter<T>(filter, new ViewCreator<T>(resId, factory), viewTypeFilters.size()));
             return this;
         }
 
         public Builder<T> addFilter(Func3<T, Integer, Integer, Boolean> filter, IViewCreator<T> viewCreator) {
-            viewTypeFilters.add(new ViewTypeFilter<T>(filter, viewCreator, viewTypeBegin++));
+            viewTypeFilters.add(new ViewTypeFilter<T>(filter, viewCreator, viewTypeFilters.size()));
             return this;
         }
 
@@ -99,16 +107,20 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
             if(loadingResId != -1) {
                 viewTypeFilters.add(new ViewTypeFilter<T>(new Func3<T, Integer, Integer, Boolean>() {
                     @Override
-                    public Boolean call(T t, Integer integer, Integer integer2) {
-                        return t == null && integer == integer2 - 1;
+                    public Boolean call(T data, Integer position, Integer itemCount) {
+                        return data == null && position == itemCount - 1;
                     }
-                }, new ViewCreator<T>(loadingResId, new Factory<IViewHolder<T>>() {
-                    @Override
-                    public IViewHolder<T> create() {
-                        return new MockViewHolder<T>();
-                    }
-                }), viewTypeBegin++));
+                }, new ViewCreator<T>(loadingResId, new MockViewHolerFactory<T>()), viewTypeFilters.size()));
             }
+            if(defaultViewCreator != null) {
+                viewTypeFilters.add(new ViewTypeFilter<T>(new Func3<T, Integer, Integer, Boolean>() {
+                    @Override
+                    public Boolean call(T data, Integer position, Integer itemCount) {
+                        return true;
+                    }
+                }, defaultViewCreator, viewTypeFilters.size()));
+            }
+
             return new ViewCreatorCollection<T>(viewTypeFilters);
         }
     }

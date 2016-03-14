@@ -7,11 +7,11 @@ A library for for simplifying adapter creation
 
 ```java
 
-class ViewHolder implements IViewHolder<String> {
+class ViewHolder implements IViewHolder<DataType> {
     // bla bla
 }
 
-listView.setAdapter(new AutoListAdapter(data, new ViewCreator(R.layout.list_item, ::ViewHolder));
+listView.setAdapter(new AutoListAdapter(items, new ViewCreator(R.layout.list_item, ::ViewHolder));
 
 ```
 
@@ -39,14 +39,20 @@ listView.setAdapter(new AutoListAdapter(stocks, collection);
 
 ```java
 
+class ViewHolder implements IViewHolder<DataType> {
+    // bla bla
+}
+
 AdapterPagingListener<DataType> pagingListener = new AdapterPagingListener<DataType>() {
     void onLoadPage(AdapterPagingCompleteHandler receiver, DataType previous, int position) {
         // bla bla bla
     }
 }
 
-ViewCreatorCollection collection = new ViewCreatorCollection.Builder<DataType>().loadingResId(R.layout.list_item_1)
-    .addFilter((data, position, itemCount) -> data != null, R.layout.list_item, ::LoadingViewHolder).build();
+ViewCreatorCollection collection = new ViewCreatorCollection.Builder<DataType>()
+    .loadingResId(R.layout.list_item_loading)
+    .addFilter(R.layout.list_item, ::ViewHolder)
+    .build();
 
 listView.setAdapter(new AutoListPagingAdapter<DataType>(stocks, collection, pagingListener));
 
@@ -56,7 +62,7 @@ listView.setAdapter(new AutoListPagingAdapter<DataType>(stocks, collection, pagi
 
 ```gradle
 dependencies {
-    compile 'com.benny.library:autoadapter:0.1.2'
+    compile 'com.benny.library:autoadapter:0.1.3'
 }
 ```
 
