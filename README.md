@@ -1,5 +1,5 @@
 # AutoAdapter
-A library for for simplifying adapter creation
+A library for for simplifying adapter creation, support List, RecyclerView, ViewPager.
 
 ## Content
 
