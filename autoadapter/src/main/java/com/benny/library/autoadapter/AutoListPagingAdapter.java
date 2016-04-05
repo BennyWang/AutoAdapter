@@ -52,7 +52,8 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
 
         if (position == getCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            if(pagingListener != null) pagingListener.onLoadPage(this, getItem(position - 1), position);
+            if (pagingListener != null && getCount() > 0)
+                pagingListener.onLoadPage(this, getItem(position - 1), position);
         }
 
         return convertView;
