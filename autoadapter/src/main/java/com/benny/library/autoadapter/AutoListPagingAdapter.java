@@ -43,7 +43,7 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
 
     @Override
     public T getItem(int position) {
-        return position < itemAccessor.size() ? super.getItem(position) : null;
+        return position < itemAccessor.size() && position > 0 ? super.getItem(position) : null;
     }
 
     @Override

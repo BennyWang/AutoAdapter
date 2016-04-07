@@ -56,7 +56,7 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onItemClick(null, itemView, position, 0);
+                if(itemClickListener != null) itemClickListener.onItemClick(null, itemView, position, 0);
             }
         });
         ((DataChangeListener<T>)itemView.getTag()).onDataChange(itemAccessor.get(position));
