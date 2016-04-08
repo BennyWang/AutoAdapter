@@ -3,14 +3,8 @@ package com.benny.library.autoadapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.benny.library.autoadapter.listener.DataSetChangedListener;
-import com.benny.library.autoadapter.viewcreator.IViewCreator;
-
-import java.util.List;
+import com.benny.library.autoadapter.listener.DataSetChangedNotifier;
 
 /**
  * Created by benny on 2/27/16.
@@ -21,9 +15,9 @@ public class AutoFragmentPagerAdapter extends FragmentPagerAdapter {
     public AutoFragmentPagerAdapter(FragmentManager fragmentManager, IAdapterItemAccessor<Fragment> itemAccessor) {
         super(fragmentManager);
         this.itemAccessor = itemAccessor;
-        itemAccessor.setDataSetChangedListener(new DataSetChangedListener() {
+        itemAccessor.setDataSetChangedNotifier(new DataSetChangedNotifier() {
             @Override
-            public void onDataSetChanged() {
+            public void notifyDataSetChanged() {
                 AutoFragmentPagerAdapter.this.notifyDataSetChanged();
             }
         });

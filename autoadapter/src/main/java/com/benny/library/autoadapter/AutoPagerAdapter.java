@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.benny.library.autoadapter.listener.DataChangeListener;
-import com.benny.library.autoadapter.listener.DataSetChangedListener;
+import com.benny.library.autoadapter.listener.DataSetChangedNotifier;
 import com.benny.library.autoadapter.viewcreator.IViewCreator;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
     public AutoPagerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
         this.itemAccessor = itemAccessor;
-        itemAccessor.setDataSetChangedListener(new DataSetChangedListener() {
+        itemAccessor.setDataSetChangedNotifier(new DataSetChangedNotifier() {
             @Override
-            public void onDataSetChanged() {
+            public void notifyDataSetChanged() {
                 AutoPagerAdapter.this.notifyDataSetChanged();
             }
         });

@@ -1,5 +1,6 @@
 package com.benny.library.autoadapter;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +18,7 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
     private boolean hasNextPage = true;
     private boolean loading = false;
 
+    private Handler handler = new Handler();
     private AdapterPagingListener<T> pagingListener;
 
     public AutoListPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
@@ -47,25 +49,29 @@ public class AutoListPagingAdapter<T> extends AutoListAdapter<T> implements Adap
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
 
         if (position == getCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            if(pagingListener != null) pagingListener.onLoadPage(this, getItem(position - 1), position);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    pagingListener.onLoadPage(AutoListPagingAdapter.this, getItem(position - 1), position);
+                }
+            });
         }
-
         return convertView;
     }
 
     @Override
     public int getCount() {
-        return super.getCount() + (hasNextPage ? 1 : 0);
+        return super.getCount() + (hasNextPage && pagingListener != null ? 1 : 0);
     }
 
     @Override
     public boolean isEmpty() {
-        return itemAccessor.isEmpty() && !hasNextPage;
+        return getCount() == 0;
     }
 
     public void onPagingComplete(boolean hasNextPage) {

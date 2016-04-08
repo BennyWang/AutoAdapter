@@ -1,5 +1,6 @@
 package com.benny.library.autoadapter;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
 import com.benny.library.autoadapter.listener.AdapterPagingCompleteListener;
@@ -16,6 +17,8 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
     private AdapterPagingListener<T> pagingListener;
     private boolean hasNextPage = true;
     private boolean loading = false;
+
+    private Handler handler = new Handler();
 
     public AutoRecyclerPagingAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         super(itemAccessor, viewCreator);
@@ -40,12 +43,18 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         super.onBindViewHolder(viewHolder, position);
+        final int fixPosition = position;
 
         if (position == getItemCount() - 1 && hasNextPage && !loading) {
             loading = true;
-            if(pagingListener != null) pagingListener.onLoadPage(this, getItem(position - 1), position);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    pagingListener.onLoadPage(AutoRecyclerPagingAdapter.this, getItem(fixPosition - 1), fixPosition);
+                }
+            });
         }
     }
 
@@ -56,7 +65,7 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
 
     @Override
     public int getItemCount() {
-        return super.getItemCount() + (hasNextPage ? 1 : 0);
+        return super.getItemCount() + (hasNextPage && pagingListener != null ? 1 : 0);
     }
 
     public void onPagingComplete(boolean hasNextPage) {
