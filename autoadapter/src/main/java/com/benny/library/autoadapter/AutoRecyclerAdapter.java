@@ -72,10 +72,12 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         public ViewHolder(final View itemView) {
             super(itemView);
 
+            if(itemClickListener == null) return;
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(itemClickListener != null) itemClickListener.onItemClick(null, itemView, getLayoutPosition(), 0);
+                    itemClickListener.onItemClick(null, itemView, getLayoutPosition(), 0);
                 }
             });
         }
