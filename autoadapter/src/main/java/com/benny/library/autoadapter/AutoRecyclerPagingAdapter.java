@@ -60,7 +60,7 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
 
     @Override
     public T getItem(int position) {
-        return position < itemAccessor.size() && position > 0 ? super.getItem(position) : null;
+        return position < itemAccessor.size() && position >= 0 ? super.getItem(position) : null;
     }
 
     @Override
