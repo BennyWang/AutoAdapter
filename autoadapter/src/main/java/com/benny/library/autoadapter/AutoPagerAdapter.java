@@ -53,6 +53,7 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = viewCreator.view(container);
+        container.addView(itemView);
         if(itemClickListener != null) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,6 +64,11 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
         }
         ((DataChangeListener<T>)itemView.getTag()).onDataChange(itemAccessor.get(position));
         return itemView;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View) object);
     }
 
     @Override
