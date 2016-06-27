@@ -72,6 +72,11 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public CharSequence getPageTitle(int position) {
         if(itemAccessor instanceof IPagerAdapterItemAccessor) {
             return ((IPagerAdapterItemAccessor) itemAccessor).getTitle(position);

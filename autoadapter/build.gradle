@@ -18,8 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 13
         targetSdkVersion 23
-        versionCode 9
-        versionName "0.1.8"
+        versionCode 11
+        versionName "0.2.0"
     }
 
     compileOptions {
@@ -37,7 +37,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
 }
 
 
@@ -46,4 +46,4 @@ ext.projectDescription  = "A library for for simplifying adapter creation"
 ext.projectGroupId      = "com.benny.library"
 ext.projectArtifactId   = "AutoAdapter"
 
-apply from: rootProject.file('gradle/bintrayUpload.gradle')
+//apply from: rootProject.file('gradle/bintrayUpload.gradle')
