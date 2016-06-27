@@ -2,6 +2,7 @@ package com.benny.library.autoadapter;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
 import com.benny.library.autoadapter.listener.DataChangeListener;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 
 public class AutoListAdapter<T> extends BaseAdapter {
+    private AdapterView.OnItemClickListener itemClickListener;
     private IViewCreator<T> viewCreator;
     protected IAdapterItemAccessor<T> itemAccessor;
 
@@ -60,6 +62,17 @@ public class AutoListAdapter<T> extends BaseAdapter {
             convertView = viewCreator.view(parent);
         }
 
+        if(itemClickListener != null) {
+            final View finalView = convertView;
+            final int finalPosition = position;
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(null, finalView, finalPosition, 0);
+                }
+            });
+        }
+
         ((DataChangeListener<T>)convertView.getTag()).onDataChange(getItem(position));
         return convertView;
     }
@@ -77,5 +90,9 @@ public class AutoListAdapter<T> extends BaseAdapter {
     @Override
     public boolean isEmpty() {
         return itemAccessor.isEmpty();
+    }
+
+    public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 }
