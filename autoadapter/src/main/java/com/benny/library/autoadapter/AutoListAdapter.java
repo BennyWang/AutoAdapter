@@ -73,7 +73,7 @@ public class AutoListAdapter<T> extends BaseAdapter {
             });
         }
 
-        ((DataChangeListener<T>)convertView.getTag()).onDataChange(getItem(position));
+        ((DataChangeListener<T>)convertView.getTag()).onDataChange(getItem(position), position);
         return convertView;
     }
 

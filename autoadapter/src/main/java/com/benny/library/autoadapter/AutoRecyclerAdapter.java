@@ -84,7 +84,7 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
 
         @SuppressWarnings("unchecked")
         void notifyDataChange(T data, int position) {
-            ((DataChangeListener<T>)itemView.getTag()).onDataChange(data);
+            ((DataChangeListener<T>)itemView.getTag()).onDataChange(data, position);
         }
     }
 }

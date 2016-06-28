@@ -62,7 +62,7 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
                 }
             });
         }
-        ((DataChangeListener<T>)itemView.getTag()).onDataChange(itemAccessor.get(position));
+        ((DataChangeListener<T>)itemView.getTag()).onDataChange(itemAccessor.get(position), position);
         return itemView;
     }
 
