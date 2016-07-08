@@ -12,6 +12,6 @@ public class MockViewHolder<T> implements IViewHolder<T> {
     }
 
     @Override
-    public void onDataChange(T data, int position) {
+    public void onDataChange(DataGetter<T> getter, int position) {
     }
 }

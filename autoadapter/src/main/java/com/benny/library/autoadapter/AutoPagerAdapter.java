@@ -5,9 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.benny.library.autoadapter.listener.DataChangeListener;
 import com.benny.library.autoadapter.listener.DataSetChangedNotifier;
 import com.benny.library.autoadapter.viewcreator.IViewCreator;
+import com.benny.library.autoadapter.viewholder.DataGetter;
+import com.benny.library.autoadapter.viewholder.IViewHolder;
 
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
         return itemAccessor.size();
     }
 
+    private T getItem(int position) {
+        return (position < 0 || position >= getCount()) ? null : itemAccessor.get(position);
+    }
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
@@ -62,7 +67,7 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
                 }
             });
         }
-        ((DataChangeListener<T>)itemView.getTag()).onDataChange(itemAccessor.get(position), position);
+        ((IViewHolder<T>)itemView.getTag()).onDataChange(new DataGetter<T>(getItem(position - 1), getItem(position), getItem(position + 1)), position);
         return itemView;
     }
 

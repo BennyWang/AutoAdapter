@@ -5,9 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.benny.library.autoadapter.listener.DataChangeListener;
 import com.benny.library.autoadapter.listener.DataSetChangedNotifier;
 import com.benny.library.autoadapter.viewcreator.IViewCreator;
+import com.benny.library.autoadapter.viewholder.DataGetter;
+import com.benny.library.autoadapter.viewholder.IViewHolder;
 
 import java.util.List;
 
@@ -47,11 +48,11 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ((ViewHolder)viewHolder).notifyDataChange(getItem(position), position);
+        ((ViewHolder)viewHolder).notifyDataChange(new DataGetter<T>(getItem(position - 1), getItem(position), getItem(position + 1)), position);
     }
 
     public T getItem(int position) {
-        return itemAccessor.get(position);
+        return (position < 0 || position >= getItemCount()) ? null : itemAccessor.get(position);
     }
 
     @Override
@@ -83,8 +84,8 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         @SuppressWarnings("unchecked")
-        void notifyDataChange(T data, int position) {
-            ((DataChangeListener<T>)itemView.getTag()).onDataChange(data, position);
+        void notifyDataChange(DataGetter<T> getter, int position) {
+            ((IViewHolder<T>)itemView.getTag()).onDataChange(getter, position);
         }
     }
 }

@@ -18,8 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 13
         targetSdkVersion 23
-        versionCode 14
-        versionName "0.2.3"
+        versionCode 15
+        versionName "0.2.4"
     }
 
     compileOptions {
@@ -46,4 +46,4 @@ ext.projectDescription  = "A library for for simplifying adapter creation"
 ext.projectGroupId      = "com.benny.library"
 ext.projectArtifactId   = "AutoAdapter"
 
-//apply from: rootProject.file('gradle/bintrayUpload.gradle')
+apply from: rootProject.file('gradle/bintrayUpload.gradle')
