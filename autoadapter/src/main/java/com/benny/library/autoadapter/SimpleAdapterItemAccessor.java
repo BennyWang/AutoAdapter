@@ -45,4 +45,8 @@ public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
     public boolean isEmpty() {
         return data.isEmpty();
     }
+
+    public List<T> getAll() {
+        return data;
+    }
 }
