@@ -5,9 +5,9 @@ package com.benny.library.autoadapter.viewholder;
  */
 
 public class DataGetter<T> {
-    public T previous;
-    public T next;
-    public T data;
+    final public T previous;
+    final public T next;
+    final public T data;
 
     public DataGetter(T previous, T data, T next) {
         this.previous = previous;
