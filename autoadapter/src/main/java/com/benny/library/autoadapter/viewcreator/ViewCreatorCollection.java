@@ -78,7 +78,7 @@ public class ViewCreatorCollection<T> implements IViewCreator<T> {
             }
         };
 
-        public Builder loadingResId(int loadingResId) {
+        public Builder<T> loadingResId(int loadingResId) {
             this.loadingResId = loadingResId;
             return this;
         }

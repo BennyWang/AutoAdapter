@@ -85,7 +85,7 @@ public class AutoListAdapter<T> extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return viewCreator.viewTypeFor(itemAccessor.get(position), position, getCount());
+        return viewCreator.viewTypeFor(getItem(position), position, getCount());
     }
 
     @Override

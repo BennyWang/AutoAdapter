@@ -84,7 +84,7 @@ new AutoListPagingAdapter<DataType>(stocks, collection, pagingListener);
 
 ```gradle
 dependencies {
-    compile 'com.benny.library:autoadapter:0.2.4'
+    compile 'com.benny.library:autoadapter:0.2.6'
 }
 ```
 
