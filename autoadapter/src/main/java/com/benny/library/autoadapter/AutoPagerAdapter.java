@@ -57,6 +57,7 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
     @SuppressWarnings("unchecked")
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
+        viewCreator.viewTypeFor(getItem(position), position, getCount());
         final View itemView = viewCreator.view(container);
         container.addView(itemView);
         if(itemClickListener != null) {

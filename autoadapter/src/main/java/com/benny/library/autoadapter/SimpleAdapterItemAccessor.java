@@ -22,7 +22,27 @@ public class SimpleAdapterItemAccessor<T> implements IAdapterItemAccessor<T> {
     }
 
     public void update(List<T> data) {
-        this.data = data;
+        this.data = new ArrayList<T>(data);
+        notifyDataSetChanged();
+    }
+
+    public void append(T item) {
+        data.add(item);
+        notifyDataSetChanged();
+    }
+
+    public void append(List<T> item) {
+        data.addAll(item);
+        notifyDataSetChanged();
+    }
+
+    public void prepend(T item) {
+        data.add(0, item);
+        notifyDataSetChanged();
+    }
+
+    public void prepend(List<T> item) {
+        data.addAll(0, item);
         notifyDataSetChanged();
     }
 
