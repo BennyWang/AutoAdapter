@@ -23,10 +23,10 @@ public interface IViewHolder<T> {
 
     // create view and bind to this view holder
     void bind(View view);
-    
+
     // position: item position in list
     // getter: access current item and previous and next, this is useful when decide show or hide some view depened on previous item or next item or all
-    void onDataChange(DataGetter<T> getter, int position); 
+    void onDataChange(DataGetter<T> getter, int position);
 }
 
 ```
@@ -60,8 +60,8 @@ new AutoListAdapter(items, new ViewCreator(R.layout.list_item, () -> new ViewHol
 // ViewCreatorCollection just another implement of IViewCreator, it create different view depends on values of item and position and itemCount.
 // It useful when getViewTypeCount > 1
 ViewCreatorCollection<DataType> collection = new ViewCreatorCollection.Builder<DataType>()
-    .addFilter(data, position, itemCount) -> position == 1, R.layout.list_item_1, ::ViewHolder1)
-    .addFilter((data, position, itemCount) -> position == 2, R.layout.list_item_2, ::ViewHolder2).build();
+    .addFilter(data, position, itemCount) -> position == 1, R.layout.list_item_1, ViewHolder1::new)
+    .addFilter((data, position, itemCount) -> position == 2, R.layout.list_item_2, ViewHolder2::new).build();
 new AutoListAdapter(items, collection);
 
 ```
@@ -72,7 +72,7 @@ new AutoListAdapter(items, collection);
 
 ViewCreatorCollection collection = new ViewCreatorCollection.Builder<DataType>()
     .loadingResId(R.layout.list_item_loading)
-    .addFilter(R.layout.list_item, ::ViewHolder)
+    .addFilter(R.layout.list_item, ViewHolder::new)
     .build();
 
 // pagingListener will be called when arrive the last position in ListView
@@ -84,7 +84,7 @@ new AutoListPagingAdapter<DataType>(stocks, collection, pagingListener);
 
 ```gradle
 dependencies {
-    compile 'com.benny.library:autoadapter:0.2.6'
+    compile 'com.benny.library:autoadapter:0.2.8'
 }
 ```
 
