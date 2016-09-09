@@ -19,6 +19,7 @@ import java.util.List;
 public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private AdapterView.OnItemClickListener itemClickListener;
     private IViewCreator<T> viewCreator;
+    protected View emptyView;
     protected IAdapterItemAccessor<T> itemAccessor;
 
     public AutoRecyclerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
@@ -57,7 +58,9 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return itemAccessor.size();
+        int itemCount = itemAccessor.size();
+        if(emptyView != null) emptyView.setVisibility(itemCount == 0 ? View.VISIBLE : View.GONE);
+        return itemCount;
     }
 
     @Override
@@ -67,6 +70,10 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setEmptyView(View view) {
+        emptyView = view;
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {

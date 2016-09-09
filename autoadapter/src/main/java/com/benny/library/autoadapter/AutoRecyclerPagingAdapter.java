@@ -2,6 +2,7 @@ package com.benny.library.autoadapter;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.benny.library.autoadapter.listener.AdapterPagingCompleteListener;
 import com.benny.library.autoadapter.listener.AdapterPagingListener;
@@ -65,7 +66,9 @@ public class AutoRecyclerPagingAdapter<T> extends AutoRecyclerAdapter<T> impleme
 
     @Override
     public int getItemCount() {
-        return super.getItemCount() + (hasNextPage && pagingListener != null ? 1 : 0);
+        int itemCount = super.getItemCount() + (hasNextPage && pagingListener != null ? 1 : 0);
+        if(emptyView != null) emptyView.setVisibility(itemCount == 0 ? View.VISIBLE : View.GONE);
+        return itemCount;
     }
 
     public void onPagingComplete(boolean hasNextPage) {

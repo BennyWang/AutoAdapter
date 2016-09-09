@@ -18,8 +18,9 @@ import java.util.List;
 
 public class AutoPagerAdapter<T> extends PagerAdapter {
     private IViewCreator<T> viewCreator;
-    protected IAdapterItemAccessor<T> itemAccessor;
     private AdapterView.OnItemClickListener itemClickListener;
+    private View emptyView;
+    protected IAdapterItemAccessor<T> itemAccessor;
 
     public AutoPagerAdapter(IAdapterItemAccessor<T> itemAccessor, IViewCreator<T> viewCreator) {
         this.viewCreator = viewCreator;
@@ -42,7 +43,13 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return itemAccessor.size();
+        int count = itemAccessor.size();
+        if(emptyView != null) emptyView.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
+        return count;
+    }
+
+    public void setEmptyView(View view) {
+        emptyView = view;
     }
 
     private T getItem(int position) {
