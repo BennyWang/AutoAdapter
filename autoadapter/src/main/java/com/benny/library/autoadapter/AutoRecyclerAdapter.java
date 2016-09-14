@@ -18,6 +18,8 @@ import java.util.List;
 
 public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private AdapterView.OnItemClickListener itemClickListener;
+    private AdapterView.OnItemLongClickListener itemLongClickListener;
+
     private IViewCreator<T> viewCreator;
     protected View emptyView;
     protected IAdapterItemAccessor<T> itemAccessor;
@@ -72,6 +74,10 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         this.itemClickListener = itemClickListener;
     }
 
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
+    }
+
     public void setEmptyView(View view) {
         emptyView = view;
     }
@@ -80,14 +86,24 @@ public class AutoRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            if(itemClickListener == null) return;
+            if(itemClickListener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemClickListener.onItemClick(null, itemView, getLayoutPosition(), 0);
+                    }
+                });
+            }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(null, itemView, getLayoutPosition(), 0);
-                }
-            });
+            if(itemLongClickListener != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        itemLongClickListener.onItemLongClick(null, itemView, getLayoutPosition(), 0);
+                        return true;
+                    }
+                });
+            }
         }
 
         @SuppressWarnings("unchecked")

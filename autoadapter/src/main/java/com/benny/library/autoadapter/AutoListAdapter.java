@@ -18,6 +18,8 @@ import java.util.List;
 
 public class AutoListAdapter<T> extends BaseAdapter {
     private AdapterView.OnItemClickListener itemClickListener;
+    private AdapterView.OnItemLongClickListener itemLongClickListener;
+
     private IViewCreator<T> viewCreator;
     protected IAdapterItemAccessor<T> itemAccessor;
 
@@ -74,6 +76,18 @@ public class AutoListAdapter<T> extends BaseAdapter {
             });
         }
 
+        if(itemLongClickListener != null) {
+            final View finalView = convertView;
+            final int finalPosition = position;
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    itemLongClickListener.onItemLongClick(null, finalView, finalPosition, 0);
+                    return true;
+                }
+            });
+        }
+
         ((IViewHolder<T>)convertView.getTag()).onDataChange(new DataGetter<T>(getItem(position - 1), getItem(position), getItem(position + 1)), position);
         return convertView;
     }
@@ -95,5 +109,9 @@ public class AutoListAdapter<T> extends BaseAdapter {
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
     }
 }

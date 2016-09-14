@@ -19,6 +19,7 @@ import java.util.List;
 public class AutoPagerAdapter<T> extends PagerAdapter {
     private IViewCreator<T> viewCreator;
     private AdapterView.OnItemClickListener itemClickListener;
+    private AdapterView.OnItemLongClickListener itemLongClickListener;
     private View emptyView;
     protected IAdapterItemAccessor<T> itemAccessor;
 
@@ -39,6 +40,10 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     @Override
@@ -75,6 +80,17 @@ public class AutoPagerAdapter<T> extends PagerAdapter {
                 }
             });
         }
+
+        if(itemLongClickListener != null) {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    itemLongClickListener.onItemLongClick(null, itemView, position, 0);
+                    return false;
+                }
+            });
+        }
+
         ((IViewHolder<T>)itemView.getTag()).onDataChange(new DataGetter<T>(getItem(position - 1), getItem(position), getItem(position + 1)), position);
         return itemView;
     }
